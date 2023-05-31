@@ -1,6 +1,7 @@
 #include <compare>
 #include <iostream>
 #include <iomanip>
+#include <iterator>
 #include <string>
 #include <vector>
 #include <cmath>
@@ -66,6 +67,13 @@ bool Student::operator==(const Student& other) const {
 std::istream& operator>>(std::istream& in, Student& s) {
 
     // TODO implement this you lazy ass motherfucker
+
+    // Draft implementation to test the waters
+    std::istream_iterator<std::string> iter_begin(in);
+    std::istream_iterator<std::string> iter_end;
+
+    // I give up >:(((((
+
 }
 
 std::ostream& operator<<(std::ostream& out, const Student& s) {
@@ -111,3 +119,30 @@ void Student::compute_course_score() {
 }
 
 // TODO implement the Gradebook class below
+
+void Gradebook::compute_grades() {
+
+    std::for_each(students.begin(), students.end(), [](Student& student) {student.compute_grades();});
+}
+
+void Gradebook::sort() {
+
+    std::sort(students.begin(), students.end());
+}
+
+void Gradebook::validate() {
+
+    std::for_each(students.begin(), students.end(), [](Student& student) {student.validate();});
+}
+
+std::istream& operator>>(std::istream& in, Gradebook& b) {
+    
+    std::copy(std::istream_iterator<Student>(in), std::istream_iterator<Student>(), std::back_inserter(b.students));
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const Gradebook& b) {
+    
+    std::copy(b.students.begin(), b.students.end(), std::ostream_iterator<Student>(out, "\n"));
+    return out;
+}
