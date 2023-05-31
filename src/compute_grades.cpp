@@ -85,6 +85,7 @@ std::ostream& operator<<(std::ostream& out, const Student& s) {
     out << std::setw(8) << std::left << "Total: " << s.course_score << "\n";
     out << std::setw(8) << std::left << "Grade: " << s.course_grade << "\n";
     out << "\n";
+    return out;
 }
 
 void Student::compute_quiz_avg() {
@@ -122,7 +123,7 @@ void Student::compute_course_score() {
 
 void Gradebook::compute_grades() {
 
-    std::for_each(students.begin(), students.end(), [](Student& student) {student.compute_grades();});
+    std::for_each(students.begin(), students.end(), [](Student& student) {student.Student::compute_grade();});
 }
 
 void Gradebook::sort() {
@@ -130,9 +131,9 @@ void Gradebook::sort() {
     std::sort(students.begin(), students.end());
 }
 
-void Gradebook::validate() {
+void Gradebook::validate() const{
 
-    std::for_each(students.begin(), students.end(), [](Student& student) {student.validate();});
+    std::for_each(students.begin(), students.end(), [](Student& student) {student.Student::validate();});
 }
 
 std::istream& operator>>(std::istream& in, Gradebook& b) {
