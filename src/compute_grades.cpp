@@ -120,7 +120,6 @@ std::ostream& operator<<(std::ostream& out, const Student& s) {
     out << std::setw(8) << std::left << "Final: " << s.final_score << "\n";
     out << std::setw(8) << std::left << "Total: " << s.course_score << "\n";
     out << std::setw(8) << std::left << "Grade: " << s.course_grade << "\n";
-    out << "\n";
     return out;
 }
 
