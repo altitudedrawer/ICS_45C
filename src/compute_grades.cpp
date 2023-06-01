@@ -69,11 +69,9 @@ bool Student::operator==(const Student& other) const {
 
 std::istream& operator>>(std::istream& in, Student& s) {
 
-    // TODO implement this you lazy ass motherfucker
-
     std::string label;
     std::string line;
-    while (std::getline(in, line)) {
+    while (std::getline(in, line) && !line.empty()) {
         std::istringstream iss(line);
         iss >> label;
         if (label == "Name") {
@@ -159,8 +157,6 @@ void Student::compute_course_score() {
     
     course_score = static_cast<int>(std::round(0.4 * quiz_avg + 0.3 * hw_avg + 0.3 * final_score));
 }
-
-// TODO implement the Gradebook class below
 
 void Gradebook::compute_grades() {
 
