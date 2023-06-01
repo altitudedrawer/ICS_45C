@@ -79,8 +79,8 @@ std::istream& operator>>(std::istream& in, Student& s) {
         if (label == "Name") {
             iss >> s.first_name;
             std::string word;
+            if (iss) s.last_name = "";
             while (iss >> word) {
-                s.last_name = "";
                 s.last_name += word + " ";
             }
         }
@@ -122,6 +122,9 @@ void Student::compute_quiz_avg() {
     if (quiz.empty()) {
         quiz_avg = 0.0;
     }
+    else if (quiz.size() == 1) {
+        quiz_avg = quiz.front();
+    }
     else {
         int min = *std::min_element(quiz.begin(), quiz.end());
         int sum = std::accumulate(quiz.begin(), quiz.end(), 0, [min](int acc, int num) {
@@ -136,6 +139,9 @@ void Student::compute_hw_avg() {
 
     if (hw.empty()) {
         hw_avg = 0.0;
+    }
+    else if (hw.size() == 1) {
+        hw_avg = hw.front();
     }
     else {
         int sum = std::accumulate(hw.begin(), hw.end(), 0);
