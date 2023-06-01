@@ -73,40 +73,32 @@ std::istream& operator>>(std::istream& in, Student& s) {
 
     std::string label;
     std::string line;
-    //std::istringstream stream;
-    //std::istream_iterator<int> iter;
     while (std::getline(in, line)) {
         std::istringstream iss(line);
-        //std::string word;
         iss >> label;
         if (label == "Name") {
             iss >> s.first_name;
-            while (iss) {
-                iss >> s.last_name;
-            }
+            iss >> s.last_name;
+            iss >> s.last_name;
         }
         if (label == "Final") {
             iss >> s.final_score;
         }
-        //std::getline(in, line);
-        //stream = std::istringstream(line);
-        //iter = std::istream_iterator<int>(stream);
         if (label == "Quiz") {
             int num;
             while (iss >> num) {
                 s.quiz.push_back(num);
             }
-            //std::copy(iter, std::istream_iterator<int>(), std::back_inserter(s.quiz));
         }
         if (label == "Hw") {
             int num;
             while (iss >> num) {
                 s.hw.push_back(num);
             }
-            //std::copy(iter, std::istream_iterator<int>(), std::back_inserter(s.hw));
         }
     }
-
+    if (s.quiz.empty()) s.quiz_avg = 0.0;
+    if (s.hw.empty()) s.hw_avg = 0.0;
     return in;
 }
 
