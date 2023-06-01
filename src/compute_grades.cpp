@@ -69,6 +69,10 @@ bool Student::operator==(const Student& other) const {
 
 std::istream& operator>>(std::istream& in, Student& s) {
 
+    s.quiz.clear();
+    s.hw.clear();
+    s.final_score = 0.0;
+
     std::string label;
     std::string line;
     while (std::getline(in, line) && !line.empty()) {
