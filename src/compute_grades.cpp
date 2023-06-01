@@ -133,7 +133,7 @@ void Gradebook::sort() {
 
 void Gradebook::validate() const{
 
-    std::for_each(students.begin(), students.end(), [](Student& student) {student.Student::validate();});
+    std::for_each(students.begin(), students.end(), [](const Student& student) {student.Student::validate();});
 }
 
 std::istream& operator>>(std::istream& in, Gradebook& b) {
