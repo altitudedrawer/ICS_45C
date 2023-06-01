@@ -68,12 +68,32 @@ std::istream& operator>>(std::istream& in, Student& s) {
 
     // TODO implement this you lazy ass motherfucker
 
-    // Draft implementation to test the waters
-    std::istream_iterator<std::string> iter_begin(in);
-    std::istream_iterator<std::string> iter_end;
-
-    // I give up >:(((((
-
+    std::string label;
+    std::string line;
+    std::istringstream stream;
+    std::istream_iterator<int> iter;
+    for (int i = 0; i < 4; ++i) {
+        in >> label;
+        if (label == "Name") {
+            in >> s.first_name;
+            in >> s.last_name;
+            continue;
+        }
+        if (label == "Final") {
+            in >> s.final_score;
+            continue;
+        }
+        std::getline(in, line);
+        stream = std::istringstream(line);
+        iter = std::istream_iterator<int>(stream);
+        if (label == "Quiz") {
+            std::copy(iter, std::istream_iterator<int>(), std::back_inserter(s.quiz));
+        }
+        if (label == "Hw") {
+            std::copy(iter, std::istream_iterator<int>(), std::back_inserter(s.hw));
+        }
+    }
+    return in;
 }
 
 std::ostream& operator<<(std::ostream& out, const Student& s) {
