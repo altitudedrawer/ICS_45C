@@ -23,6 +23,9 @@ void Student::validate() const {
 
 void Student::compute_grade() {
 
+    compute_quiz_avg();
+    compute_hw_avg();
+    compute_course_score();
     if (course_score >= 97 && course_score <= 100) {
         course_grade = "A+";
     } else if (course_score >= 93 && course_score <= 96) {
@@ -70,29 +73,40 @@ std::istream& operator>>(std::istream& in, Student& s) {
 
     std::string label;
     std::string line;
-    std::istringstream stream;
-    std::istream_iterator<int> iter;
-    for (int i = 0; i < 4; ++i) {
-        in >> label;
+    //std::istringstream stream;
+    //std::istream_iterator<int> iter;
+    while (std::getline(in, line)) {
+        std::istringstream iss(line);
+        //std::string word;
+        iss >> label;
         if (label == "Name") {
-            in >> s.first_name;
-            in >> s.last_name;
-            continue;
+            iss >> s.first_name;
+            while (iss) {
+                iss >> s.last_name;
+            }
         }
         if (label == "Final") {
-            in >> s.final_score;
-            continue;
+            iss >> s.final_score;
         }
-        std::getline(in, line);
-        stream = std::istringstream(line);
-        iter = std::istream_iterator<int>(stream);
+        //std::getline(in, line);
+        //stream = std::istringstream(line);
+        //iter = std::istream_iterator<int>(stream);
         if (label == "Quiz") {
-            std::copy(iter, std::istream_iterator<int>(), std::back_inserter(s.quiz));
+            int num;
+            while (iss >> num) {
+                s.quiz.push_back(num);
+            }
+            //std::copy(iter, std::istream_iterator<int>(), std::back_inserter(s.quiz));
         }
         if (label == "Hw") {
-            std::copy(iter, std::istream_iterator<int>(), std::back_inserter(s.hw));
+            int num;
+            while (iss >> num) {
+                s.hw.push_back(num);
+            }
+            //std::copy(iter, std::istream_iterator<int>(), std::back_inserter(s.hw));
         }
     }
+
     return in;
 }
 
@@ -143,7 +157,7 @@ void Student::compute_course_score() {
 
 void Gradebook::compute_grades() {
 
-    std::for_each(students.begin(), students.end(), [](Student& student) {student.Student::compute_grade();});
+    std::for_each(students.begin(), students.end(), [](Student& student) {student.compute_grade();});
 }
 
 void Gradebook::sort() {
@@ -153,7 +167,7 @@ void Gradebook::sort() {
 
 void Gradebook::validate() const{
 
-    std::for_each(students.begin(), students.end(), [](const Student& student) {student.Student::validate();});
+    std::for_each(students.begin(), students.end(), [](const Student& student) {student.validate();});
 }
 
 std::istream& operator>>(std::istream& in, Gradebook& b) {
