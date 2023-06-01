@@ -12,13 +12,14 @@
 
 void Student::validate() const {
     
-    for (int num : quiz) {
-        if (num < 0 || num > 100) throw std::domain_error("Error: invalid percentage " + std::to_string(num));
-    }
-    for (int num : hw) {
-        if (num < 0 || num > 100) throw std::domain_error("Error: invalid percentage " + std::to_string(num));
-    }
-    if (final_score < 0 || final_score > 100) throw std::domain_error("Error: invalid percentage " + std::to_string(final_score));
+    auto invalid_quiz_num = std::find_if(quiz.begin(), quiz.end(), [](int num) {return num < 0 || num > 100;});
+    if (invalid_quiz_num != quiz.end())
+        throw std::domain_error("Error: invalid percentage " + std::to_string(*invalid_quiz_num));
+    auto invalid_hw_num = std::find_if(hw.begin(), hw.end(), [](int num) {return num < 0 || num > 100;});
+    if (invalid_hw_num != hw.end())
+        throw std::domain_error("Error: invalid percentage " + std::to_string(*invalid_hw_num));
+    if (final_score < 0 || final_score > 100)
+        throw std::domain_error("Error: invalid percentage " + std::to_string(final_score));
 }
 
 void Student::compute_grade() {
