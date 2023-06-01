@@ -78,8 +78,10 @@ std::istream& operator>>(std::istream& in, Student& s) {
         iss >> label;
         if (label == "Name") {
             iss >> s.first_name;
-            iss >> s.last_name;
-            iss >> s.last_name;
+            std::string word;
+            while (iss >> word) {
+                s.last_name += word + " ";
+            }
         }
         if (label == "Final") {
             iss >> s.final_score;
