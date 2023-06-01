@@ -80,6 +80,7 @@ std::istream& operator>>(std::istream& in, Student& s) {
             iss >> s.first_name;
             std::string word;
             while (iss >> word) {
+                s.last_name = "";
                 s.last_name += word + " ";
             }
         }
@@ -92,7 +93,7 @@ std::istream& operator>>(std::istream& in, Student& s) {
                 s.quiz.push_back(num);
             }
         }
-        if (label == "Hw") {
+        if (label == "HW") {
             int num;
             while (iss >> num) {
                 s.hw.push_back(num);
