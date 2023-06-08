@@ -91,7 +91,7 @@ public:
 
     ListIterator insert(T value) {
         if (contains(value)) return ListIterator(nullptr);
-        std::shared_ptr<ListNode> new_node = std::make_shared<ListNode>(value);
+        std::shared_ptr<ListNode> new_node = std::make_shared<ListNode>(std::move(value));
         new_node->next = head;
         head = new_node;
         return ListIterator(new_node);
