@@ -25,21 +25,82 @@ public:
         using pointer = value_type*;
         using reference = value_type&;
 
-        explicit ArrayIterator(std::pair<Key, Value>* ptr = nullptr);
-        ArrayIterator& operator++();
-        ArrayIterator& operator--();
-        ArrayIterator operator++(int);
-        ArrayIterator operator--(int);
-        ArrayIterator& operator+=(difference_type d);
-        ArrayIterator& operator-=(difference_type d);
-        friend ArrayIterator operator+(ArrayIterator it, difference_type d);
-        friend ArrayIterator operator+(difference_type d, ArrayIterator it);
-        friend ArrayIterator operator-(ArrayIterator it, difference_type d);
-        friend difference_type operator-(ArrayIterator lhs, ArrayIterator rhs);
+        explicit ArrayIterator(std::pair<Key, Value>* ptr = nullptr) : ptr(ptr) {}
+
+        ArrayIterator& operator++() {
+            
+            ++ptr;
+            return *this;
+        }
+
+        ArrayIterator& operator--() {
+
+            --ptr;
+            return *this;
+        }
+
+        ArrayIterator operator++(int) {
+            
+            ArrayIterator previous = *this;
+            ++ptr;
+            return previous;
+        }
+
+        ArrayIterator operator--(int) {
+
+            ArrayIterator previous = *this;
+            --ptr;
+            return previous;
+        }
+
+        ArrayIterator& operator+=(difference_type d) {
+
+            ptr += d;
+            return *this;
+        }
+
+        ArrayIterator& operator-=(difference_type d) {
+
+            ptr -= d;
+            return *this;
+        }
+
+        friend ArrayIterator operator+(ArrayIterator it, difference_type d) {
+
+            return it += d;
+        }
+
+        friend ArrayIterator operator+(difference_type d, ArrayIterator it) {
+
+            return it + d;
+        }
+
+        friend ArrayIterator operator-(ArrayIterator it, difference_type d) {
+
+            return it -= d;
+        }
+
+        friend difference_type operator-(ArrayIterator lhs, ArrayIterator rhs) {
+
+            return lhs.ptr - rhs.ptr;
+        }
+
         auto operator<=>(const ArrayIterator& other) const = default;
-        std::pair<Key, Value>& operator*() const;
-        std::pair<Key, Value>* operator->() const;
-        std::pair<Key, Value>& operator[](difference_type d) const;
+
+        std::pair<Key, Value>& operator*() const {
+            
+            return *ptr;
+        }
+
+        std::pair<Key, Value>* operator->() const {
+
+            return &(*ptr);
+        }
+
+        std::pair<Key, Value>& operator[](difference_type d) const {
+
+            return *(*this + d);
+        }
 
     private:
 
@@ -52,12 +113,12 @@ public:
 
     ArrayIterator begin() {
 
-
+        return ArrayIterator(data.data());
     }
 
     ArrayIterator end() {
 
-
+        return ArrayIterator(data.data() + data.size());
     }
 
     Value& operator[](const Key& key) {
