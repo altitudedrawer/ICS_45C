@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iterator>
 #include <ranges>
+#include <map>
 
 #include "map_array.hpp"
 #include "set_list.hpp"
@@ -9,7 +10,7 @@
 using namespace std;
 
 string to_lowercase(const string& str) {
-    auto lower_view = views::transform(std, ::tolower);
+    auto lower_view = views::transform(str, ::tolower);
     return {lower_view.begin(), lower_view.end()};
 }
 
@@ -18,13 +19,13 @@ SetList<string> load_stopwords(istream& stopwords) {
                            | views::transform(to_lowercase)};
 }
 
-MapArray<string, int> count_words(istream& document, SetList<string>& stopwords) {
+std::map<string, int> count_words(istream& document, SetList<string>& stopwords) {
     auto words_view = ranges::istream_view<string>(document)
                       | views::transform(to_lowercase)
                       | views::filter([&](const string& s) {
                             return !stopwords.contains(s);
                         });
-    MapArray<string, int> result;
+    std::map<string, int> result;
     for (const string& s : words_view) {
         ++result[s];
     }
@@ -32,7 +33,7 @@ MapArray<string, int> count_words(istream& document, SetList<string>& stopwords)
     return result;
 }
 
-void output_word_counts(MapArray<string, int>& word_counts, ostream& output) {
+void output_word_counts(std::map<string, int>& word_counts, ostream& output) {
     for (const auto& [word, count] : word_counts) {
         output << word << ' ' << count << '\n';
     }
